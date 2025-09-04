@@ -1,0 +1,53 @@
+{
+  "purpose": [
+    {
+      "description": "Your code correctly implements the custom higher-order functions `count()` and `average()` as described in the project instructions. Both functions are used to process data from the CSV file as required.",
+      "old_code": "",
+      "new_code": ""
+    },
+    {
+      "description": "The recursive `avg_helper()` function is implemented and used within `average()`, fulfilling the requirement for a recursive approach.",
+      "old_code": "",
+      "new_code": ""
+    },
+    {
+      "description": "Consider adding error handling for cases where the filtered iterable is empty, which would cause a division by zero in `avg_helper()`.",
+      "old_code": "if next_num == \"null\":\n    return curr_sum/curr_count",
+      "new_code": "if next_num == \"null\":\n    return curr_sum/curr_count if curr_count != 0 else 0"
+    }
+  ],
+  "readability": [
+    {
+      "description": "Your code is well-structured and follows Python conventions, making it easy to read and understand.",
+      "old_code": "",
+      "new_code": ""
+    },
+    {
+      "description": "Consider adding docstrings to your functions to describe their purpose and parameters. This will help others (and your future self) understand your code more quickly.",
+      "old_code": "def count(predicate, itr):",
+      "new_code": "def count(predicate, itr):\n    \"\"\"Returns the number of elements in itr for which predicate returns True.\"\"\""
+    },
+    {
+      "description": "Add a comment above the `with open` block to clarify that this section is for processing the CSV file and using the custom functions.",
+      "old_code": "with open('1kSalesRec.csv', newline = '') as csvfile:",
+      "new_code": "# Process CSV file and apply custom higher-order functions\nwith open('1kSalesRec.csv', newline = '') as csvfile:"
+    }
+  ],
+  "performance": [
+    {
+      "description": "You efficiently use Python's built-in `filter`, `map`, and `reduce` functions, which is great for performance and clarity.",
+      "old_code": "",
+      "new_code": ""
+    },
+    {
+      "description": "After reading the CSV file once, you use `csvfile.seek(0)` to reset the file pointer. However, you should also reset the `reader` object after seeking, as the old `reader` may not work as expected after seeking.",
+      "old_code": "csvfile.seek(0)\n# task 10\navg_portugal = average(map(lambda x: float(x[13]), filter(lambda x: x[1] == \"Portugal\", reader)))",
+      "new_code": "csvfile.seek(0)\nreader = csv.reader(csvfile, delimiter=',', quotechar='|')\nfields = next(reader)\navg_portugal = average(map(lambda x: float(x[13]), filter(lambda x: x[1] == \"Portugal\", reader)))"
+    },
+    {
+      "description": "To further improve performance and avoid reading the file twice, consider storing the rows in a list after skipping the header, then reusing this list for both operations.",
+      "old_code": "reader = csv.reader(csvfile, delimiter=',', quotechar='|')\nfields = next(reader)\n# task 9\ncount_belgiums = count(lambda x: x[1] == \"Belgium\", reader)\nprint(count_belgiums)\ncsvfile.seek(0)\n# task 10\navg_portugal = average(map(lambda x: float(x[13]), filter(lambda x: x[1] == \"Portugal\", reader)))\nprint(avg_portugal)",
+      "new_code": "reader = csv.reader(csvfile, delimiter=',', quotechar='|')\nfields = next(reader)\nrows = list(reader)\ncount_belgiums = count(lambda x: x[1] == \"Belgium\", rows)\nprint(count_belgiums)\navg_portugal = average(map(lambda x: float(x[13]), filter(lambda x: x[1] == \"Portugal\", rows)))\nprint(avg_portugal)"
+    }
+  ]
+}
